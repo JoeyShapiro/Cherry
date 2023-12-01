@@ -11,6 +11,10 @@ def hello_world():
 
 @app.route('/')
 def index():
+    # TODO allows for live editing
+    with open('index.html') as f:
+        page_index = f.read()
+
     return page_index
 
 if __name__ == '__main__':
