@@ -2,7 +2,7 @@ FROM python:alpine
 
 RUN pip install flask
 ADD app.py /var/www/app.py
-ADD index.html /var/www/index.html
+ADD templates /var/www/templates
 
 EXPOSE 8000
 
