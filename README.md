@@ -14,6 +14,7 @@ could have just done login, but this is more fun
 npm dont need it
 
 ## TODO
+- [ ] debug vs prod
 - [ ] basic site
 - [ ] https
 - [ ] database
