@@ -3,7 +3,7 @@ services:
   db:
     image: mysql
     volumes:
-      - ./server:/docker-entrypoint-initdb.d:ro
+      - ./schemas:/docker-entrypoint-initdb.d:ro
     environment:
       MYSQL_ROOT_PASSWORD: toor
       MYSQL_DATABASE: project
@@ -11,11 +11,19 @@ services:
       MYSQL_PASSWORD: toor
     ports:
       - "9906:3306"
-  server:
-    build: ./server
+  api:
+    build: ./api
     depends_on:
       - db
     ports:
       - 80:8000
     volumes:
-      - ./server:/mnt/debug:ro
+      - ./api:/mnt/debug:ro
+  client:
+    build: ./client
+    depends_on:
+      - api
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client:/mnt/debug:rw
