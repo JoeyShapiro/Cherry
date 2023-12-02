@@ -1,6 +1,7 @@
 {
 	"/": [
-		"src/routes/+page.ts"
+		"src/routes/+page.ts",
+		"src/routes/+page.server.ts"
 	],
 	"/about": [
 		"src/routes/about/+page.ts"

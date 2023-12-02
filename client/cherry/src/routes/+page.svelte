@@ -1,7 +1,7 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+
+	/** @type {import('./$types').PageData} */
+	export let data: any;
 </script>
 
 <svelte:head>
@@ -12,8 +12,11 @@
 </svelte:head>
 
 <section>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+	
 	<main class="d-flex flex-column vh-100">
-		{console.log('hello fraom page')}
         <!-- nav bar -->
         <header class="p-3 text-bg-dark w-100">
             <div class="container">
@@ -119,44 +122,18 @@
 
             <!-- chat -->
             <div class="d-flex flex-column flex-fill">
-                <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
-                        <strong class="mr-auto m-1">Bootstrap</strong>
-                        <small class="text-muted">just now</small>
-                    </div>
-                    <div class="toast-body">
-                        See? Just like this.
-                    </div>
-                </div>
-
-                <div class="toast fade show m-2" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <!-- <img src="..." class="rounded mr-2" alt="..."> -->
-                        <strong class="mr-auto">Bootstrap</strong>
-                        <small class="text-muted">just now</small>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="toast-body">
-                        See? Just like this.
-                    </div>
-                </div>
-
-                <div class="toast fade show m-2" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <!-- <img src="..." class="rounded mr-2" alt="..."> -->
-                        <strong class="mr-auto">Bootstrap</strong>
-                        <small class="text-muted">2 seconds ago</small>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="toast-body">
-                        Heads up, toasts will stack automatically
-                    </div>
-                </div>
+				{#each data.get as message}
+					<div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="toast-header">
+							<!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
+							<strong class="mr-auto m-1">{message.user_id}</strong>
+							<small class="text-muted">{message.time}</small>
+						</div>
+						<div class="toast-body">
+							{message.message}
+						</div>
+					</div>
+				{/each}
             </div>
         </div>
 
@@ -171,9 +148,4 @@
                 id="button-addon2">Send</button>
         </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-
-	<Counter />
 </section>
