@@ -5,5 +5,11 @@
 	],
 	"/about": [
 		"src/routes/about/+page.ts"
+	],
+	"/api/login": [
+		"src/routes/api/login/+server.ts"
+	],
+	"/login": [
+		"src/routes/login/+page.ts"
 	]
 }

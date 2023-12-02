@@ -23,7 +23,7 @@ async function getUsers() {
     let mysqlconn = await mysqlconnFn();
     try {
         let results = await mysqlconn
-            .query("SELECT id, username time FROM messages;")
+            .query("SELECT id, username FROM users;")
         // .then(function ([rows, fields]) {
         //   console.log(rows);
         // });

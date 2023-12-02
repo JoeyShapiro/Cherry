@@ -45,7 +45,6 @@
                 </div>
             </div>
         </header>
-        <!-- <h1>Hello, world!</h1> -->
 
         <div class="d-flex flex-row flex-fill">
             <!-- sidbar -->
