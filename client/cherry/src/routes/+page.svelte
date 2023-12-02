@@ -122,11 +122,11 @@
 
             <!-- chat -->
             <div class="d-flex flex-column flex-fill">
-				{#each data.get as message}
+				{#each data.get.messages as message}
 					<div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
 							<!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
-							<strong class="mr-auto m-1">{message.user_id}</strong>
+							<strong class="mr-auto m-1">{message.username}</strong>
 							<small class="text-muted">{message.time}</small>
 						</div>
 						<div class="toast-body">
