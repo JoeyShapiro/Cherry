@@ -9,6 +9,9 @@
 	"/api/login": [
 		"src/routes/api/login/+server.ts"
 	],
+	"/api/messages": [
+		"src/routes/api/messages/+server.ts"
+	],
 	"/login": [
 		"src/routes/login/+page.ts"
 	]

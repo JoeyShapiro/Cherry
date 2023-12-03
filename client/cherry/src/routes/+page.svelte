@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	/** @type {import('./$types').PageData} */
 	export let data: any;
 </script>
@@ -17,6 +16,15 @@
         crossorigin="anonymous"></script>
     
     <script lang="ts" type="module">
+        window.onload = init;
+
+        function init() {
+            const button = document.getElementById("send-btn");
+            button.addEventListener("click", () => {
+                send()
+            });
+        }
+
         export function getCookie(name: string) {
             const value = "; " + document.cookie;
             const parts = value.split("; " + name + "=");
@@ -24,6 +32,24 @@
             if (parts.length == 2) {
                 return parts.pop().split(";").shift();
             }
+        }
+
+        async function send() {
+            const key = document.getElementById("send-key").value
+            const text = document.getElementById("send-text").value
+
+            console.log(key, text)
+
+            const response = await fetch('/api/messages', {
+                method: 'POST',
+                body: JSON.stringify({ text, 'session': getCookie('session_id') }),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
+        
+            let data = await response.json()
+            console.log('return', data)
         }
     </script>
 	
@@ -151,11 +177,11 @@
         <!-- input dialog -->
         <div class="input-group mb-3">
             <input type="text" style="max-width: 25%;" class="form-control" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Key">
+                aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key">
             <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Message">
+                aria-describedby="inputGroup-sizing-default" placeholder="Message" id="send-text">
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
-                id="button-addon2">Send</button>
+                id="send-btn">Send</button>
         </div>
     </main>
 </section>
