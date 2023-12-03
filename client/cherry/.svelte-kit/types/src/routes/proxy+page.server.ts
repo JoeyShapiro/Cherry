@@ -42,7 +42,7 @@ export async function load({ params, cookies }) {
 
     let session_id = cookies.get('session_id') || null
 
-    let user = users.find((user: { session: string; }) => user.session == session_id);
+    let user = users.find((user: { session: string; }) => user.session == session_id) || { session: "" };
 
     return {
         get: {
