@@ -23,6 +23,7 @@
             button.addEventListener("click", () => {
                 send()
             });
+            scrollToBottom()
         }
 
         export function getCookie(name: string) {
@@ -50,6 +51,14 @@
         
             let data = await response.json()
             console.log('return', data)
+        }
+
+        function scrollToBottom() {
+            var chatbox = document.getElementById('chatbox');
+            
+            // Scroll to the bottom with smooth animation
+            chatbox.lastElementChild.scrollIntoView({ behavior: 'smooth' });
+            // chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     </script>
 	
@@ -83,7 +92,7 @@
             </div>
         </header>
 
-        <div class="d-flex flex-row flex-fill">
+        <div class="d-flex flex-row flex-fill overflow-hidden">
             <!-- sidbar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary flex-fill" style="max-width: 280px;">
                 <a href="/"
@@ -157,7 +166,7 @@
             </div>
 
             <!-- chat -->
-            <div class="d-flex flex-column flex-fill">
+            <div id="chatbox" class="d-flex flex-column flex-fill overflow-auto">
 				{#each data.get.messages as message}
 					<div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
