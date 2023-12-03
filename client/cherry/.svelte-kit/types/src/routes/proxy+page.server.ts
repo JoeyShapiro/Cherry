@@ -23,10 +23,7 @@ async function getUsers() {
     let mysqlconn = await mysqlconnFn();
     try {
         let results = await mysqlconn
-            .query("SELECT id, username FROM users;")
-        // .then(function ([rows, fields]) {
-        //   console.log(rows);
-        // });
+            .query("SELECT id, username, session FROM users;")
 
         return results[0]
     } catch (error) {
@@ -37,15 +34,21 @@ async function getUsers() {
 }
 
 /** @param {Parameters<import('./$types').PageServerLoad>[0]} event */
-export async function load({ params }) {
+export async function load({ params, cookies }) {
     console.log('hello from server load')
 
     let users = await getUsers();
     let messages = await getMessages(users);
 
+    let session_id = cookies.get('session_id') || null
+
+    let user = users.find((user: { session: string; }) => user.session == session_id);
+
     return {
         get: {
-            messages
+            messages,
+            users,
+            user
         }
     };
 }

@@ -8,15 +8,18 @@ create table messages
         unique (id)
 );
 
-create table users
+create table project.users
 (
     id       int auto_increment
         primary key,
     username varchar(64)  not null,
     password varchar(128) not null,
+    session  varchar(36),
     constraint id
         unique (id)
 );
+
+
 
 -- bob:bob
 INSERT INTO project.users (username, password)

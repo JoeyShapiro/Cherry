@@ -13,6 +13,10 @@ could have just done login, but this is more fun
 
 npm dont need it
 
+this isnt worth the effort though
+just do a simple db thing. can store forever, who cares
+https://www.captaincodeman.com/re-creating-the-sveltekit-session-store
+
 ## TODO
 - [ ] debug vs prod
 - [ ] basic site
