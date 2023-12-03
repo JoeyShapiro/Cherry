@@ -11,7 +11,8 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     
-    <script lang="ts">
+    <script lang="ts" type="module">
+
         // TODO do PageLoad on stuff for it
         window.onload = init;
 
@@ -19,6 +20,7 @@
             const button = document.getElementById("submit");
             button.addEventListener("click", () => {
                 console.log('hello')
+                login()
             });
         }
 
@@ -27,13 +29,49 @@
             let b = 2
         }
 
+
+        async function sha512(data) {
+            var enc = new TextEncoder(); // always utf-8
+            const bytes = enc.encode(data)
+            console.log(bytes)
+
+            // TODO try to await
+            const hash = await window.crypto.subtle.digest(
+                {
+                    name: "SHA-512",
+                },
+                new Uint8Array(bytes) //The data you want to hash as an ArrayBuffer
+            )
+            const hashHex = Array.from(new Uint8Array(hash))
+                .map((b) => b.toString(16).padStart(2, "0"))
+                .join("");
+            
+            return hashHex;
+            // .then(function(hash){
+            //     //returns the hash as an ArrayBuffer
+
+            //     const hashHex = Array.from(new Uint8Array(hash))
+            //         .map((b) => b.toString(16).padStart(2, "0"))
+            //         .join("");
+                
+            //     console.log(hashHex)
+            //     return hashHex;
+            // })
+            // .catch(function(err){
+            //     console.error(err);
+            // });
+        }
+
         async function login() {
             const input_user = document.getElementById("floatingInput");
             const input_pass = document.getElementById("floatingPassword");
 
+
+            var hash = await sha512(input_pass.value)
+
             const response = await fetch('/api/login', {
                 method: 'POST',
-                body: JSON.stringify({ 'username': input_user.value, 'password': input_pass.value }),
+                body: JSON.stringify({ 'username': input_user.value, 'password': hash }),
                 headers: {
                     'content-type': 'application/json',
                 },
@@ -47,7 +85,7 @@
 
     </script>
 
-    <form id="form" onsubmit="event.preventDefault(); return login();"> <!-- action="api/login" -->
+    <form id="form" onsubmit="event.preventDefault();"> <!-- action="api/login" -->
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         <div class="form-floating">
             <input
