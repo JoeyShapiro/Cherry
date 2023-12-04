@@ -35,10 +35,11 @@
         }
 
         function addMessage(data) {
+            console.log(data.username, getCookie('username'), data.username == getCookie('username'))
             const html = `
             <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
-							<strong class="mr-auto m-1" style=${data.username == getCookie('username') ? "color: red" : ""}>${data.username}</strong>
+							<strong class="mr-auto m-1" style=${data.username == getCookie('username') ? "\"color: red\"" : "\"\""}>${data.username}</strong>
 							<small id="date" class="text-muted">${data.time}</small>
 						</div>
 						<div class="toast-body">
@@ -66,6 +67,7 @@
         async function send() {
             const key = document.getElementById("send-key").value
             const text = document.getElementById("send-text").value
+            document.getElementById("send-text").value = ""
 
             console.log(key, text)
 
