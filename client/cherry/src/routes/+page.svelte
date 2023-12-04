@@ -24,16 +24,34 @@
                 send()
             });
             scrollToBottom()
-            pollMessages()
+            keepPolling()
+        }
 
-            // TODO
-            // keep polling
-            // let worker = new Worker('worker.js')
+        async function keepPolling() {
+            while (true) {
+                console.log('polling')
+                await pollMessages()
+            }
+        }
 
-            //Get the result from the worker. This code will be called when postMessage is called in the worker.
-            // worker.onmessage = function(event){
-            //     alert("The result is " + event.data);
-            // }
+        function addMessage(data) {
+            const html = `
+            <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="toast-header">
+							<strong class="mr-auto m-1" style=${data.username == getCookie('username') ? "color: red" : ""}>${data.username}</strong>
+							<small id="date" class="text-muted">${data.time}</small>
+						</div>
+						<div class="toast-body">
+							${data.message}
+						</div>
+					</div>
+            `
+
+            const chatbox = document.getElementById('chatbox')
+
+            // Change this to div.childNodes to support multiple top-level nodes.
+            chatbox.insertAdjacentHTML( 'beforeend', html );
+            console.log('added')
         }
 
         export function getCookie(name: string) {
@@ -74,7 +92,9 @@
             });
         
             let data = await response.json();
-            console.log('return', data)
+            
+            addMessage(data[0])
+            scrollToBottom()
         }
 
         function scrollToBottom() {

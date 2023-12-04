@@ -95,6 +95,7 @@
             console.log('return', data)
 
             setCookie('session_id', data.session_id)
+            setCookie('username', input_user.value)
             window.location.href = "http://localhost:8080/";
 
 

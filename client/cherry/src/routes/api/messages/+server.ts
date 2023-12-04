@@ -18,7 +18,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
         var results = null
         while (results == null || results[0].length == 0) {
             results = await mysqlconn
-                .execute('select * from messages where time > ?', [ mysqlDatetime ])
+                .execute('select message, username, time from messages inner join users u on messages.user_id = u.id where time > ?', [ mysqlDatetime ])
             setTimeout(() => {}, 0.2);
         }
 
