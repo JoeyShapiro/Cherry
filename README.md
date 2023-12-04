@@ -17,6 +17,10 @@ this isnt worth the effort though
 just do a simple db thing. can store forever, who cares
 https://www.captaincodeman.com/re-creating-the-sveltekit-session-store
 
+i guess i shouldnt do foreach svelte stuff
+how can i only do some stuff on the client
+i think i have it divided decently now
+
 ## TODO
 - [ ] debug vs prod
 - [ ] basic site

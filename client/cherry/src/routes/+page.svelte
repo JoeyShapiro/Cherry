@@ -24,6 +24,16 @@
                 send()
             });
             scrollToBottom()
+            pollMessages()
+
+            // TODO
+            // keep polling
+            // let worker = new Worker('worker.js')
+
+            //Get the result from the worker. This code will be called when postMessage is called in the worker.
+            // worker.onmessage = function(event){
+            //     alert("The result is " + event.data);
+            // }
         }
 
         export function getCookie(name: string) {
@@ -50,6 +60,20 @@
             });
         
             let data = await response.json()
+            console.log('return', data)
+        }
+
+        // will send a request, and the server will respond when a message is added
+        async function pollMessages() {
+            const chatbox = document.getElementById('chatbox')
+            const last_date = chatbox.lastElementChild.querySelector('#date').textContent
+
+            const response = await fetch(`/api/messages?last_date=${last_date}`, {
+                method: 'GET',
+                setTimeout: 0
+            });
+        
+            let data = await response.json();
             console.log('return', data)
         }
 
@@ -172,7 +196,7 @@
 						<div class="toast-header">
 							<!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
 							<strong class="mr-auto m-1" style={message.username == data.get.user.username ? "color: red" : ""}>{message.username}</strong>
-							<small class="text-muted">{message.time}</small>
+							<small id="date" class="text-muted">{message.time}</small>
 						</div>
 						<div class="toast-body">
 							{message.message}
