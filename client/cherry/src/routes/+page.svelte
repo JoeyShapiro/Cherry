@@ -27,7 +27,72 @@
             keepPolling()
         }
 
+        function encryptMessage(key, text) {
+            window.crypto.subtle.importKey(
+    "jwk", //can be "jwk" or "raw"
+    {   //this is an example jwk key, "raw" would be an ArrayBuffer
+        kty: "oct",
+        k: "Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE",
+        alg: "A256CBC",
+        ext: true,
+    },
+    {   //this is the algorithm options
+        name: "AES-CBC",
+    },
+    false, //whether the key is extractable (i.e. can be used in exportKey)
+    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+)
+        }
+
         async function keepPolling() {
+            let key = await window.crypto.subtle.generateKey(
+                {
+                    name: "AES-CBC",
+                    length: 256, //can be  128, 192, or 256
+                },
+                true, //whether the key is extractable (i.e. can be used in exportKey)
+                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+            )
+
+console.log(key)
+
+window.crypto.subtle.exportKey(
+    "jwk", //can be "jwk" or "raw"
+    key //extractable must be true
+)
+.then(function(keydata){
+    //returns the exported key data
+    console.log('export', keydata);
+})
+.catch(function(err){
+    console.error(err);
+});
+
+// TODO how can i make custom key. must be 256 bits, or 32 bytes. i think
+// TODO implement date check. use current if nothing
+// TODO user implements valid b65, then try padding just 0s, then try padding 0 before b64, then try user enters actual key, even though cant really
+window.crypto.subtle.importKey(
+    "jwk", //can be "jwk" or "raw"
+    {   //this is an example jwk key, "raw" would be an ArrayBuffer
+        kty: "oct",
+        k: "Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE",
+        alg: "A256CBC",
+        ext: true,
+    },
+    {   //this is the algorithm options
+        name: "AES-CBC",
+    },
+    false, //whether the key is extractable (i.e. can be used in exportKey)
+    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+)
+.then(function(key){
+    //returns the symmetric key
+    console.log('import', key);
+})
+.catch(function(err){
+    console.error(err);
+});
+
             while (true) {
                 console.log('polling')
                 await pollMessages()

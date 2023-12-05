@@ -21,6 +21,9 @@ i guess i shouldnt do foreach svelte stuff
 how can i only do some stuff on the client
 i think i have it divided decently now
 
+https://www.highgo.ca/2019/08/08/the-difference-in-five-modes-in-the-aes-encryption-algorithm/
+gonna use CBC, because i feel like i heard of it
+
 ## TODO
 - [ ] debug vs prod
 - [ ] basic site
