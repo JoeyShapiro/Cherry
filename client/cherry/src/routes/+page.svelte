@@ -27,51 +27,73 @@
             keepPolling()
         }
 
-        function encryptMessage(key, text) {
-            window.crypto.subtle.importKey(
-    "jwk", //can be "jwk" or "raw"
-    {   //this is an example jwk key, "raw" would be an ArrayBuffer
-        kty: "oct",
-        k: "Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE",
-        alg: "A256CBC",
-        ext: true,
-    },
-    {   //this is the algorithm options
-        name: "AES-CBC",
-    },
-    false, //whether the key is extractable (i.e. can be used in exportKey)
-    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-)
-        }
-
-        async function keepPolling() {
-            let key = await window.crypto.subtle.generateKey(
-                {
-                    name: "AES-CBC",
-                    length: 256, //can be  128, 192, or 256
+        // TODO maybe just copy what they do
+        async function encMessage(key, text) {
+            let crypto_key = await window.crypto.subtle.importKey(
+                "jwk", //can be "jwk" or "raw"
+                {   //this is an example jwk key, "raw" would be an ArrayBuffer
+                    kty: "oct",
+                    k: key,
+                    alg: "A256CBC",
+                    ext: true,
                 },
-                true, //whether the key is extractable (i.e. can be used in exportKey)
+                {   //this is the algorithm options
+                    name: "AES-CBC",
+                },
+                false, //whether the key is extractable (i.e. can be used in exportKey)
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
             )
 
-console.log(key)
+            const encoded = new TextEncoder().encode(text)
+            let raw = await window.crypto.subtle.encrypt(
+                {
+                    name: "AES-CBC",
+                    //Don't re-use initialization vectors!
+                    //Always generate a new iv every time your encrypt!
+                    iv: new Uint8Array(16),
+                },
+                crypto_key, //from generateKey or importKey above
+                encoded //ArrayBuffer of data you want to encrypt
+            )
 
-window.crypto.subtle.exportKey(
-    "jwk", //can be "jwk" or "raw"
-    key //extractable must be true
-)
-.then(function(keydata){
-    //returns the exported key data
-    console.log('export', keydata);
-})
-.catch(function(err){
-    console.error(err);
-});
+            console.log(new Uint8Array(raw))
+            return raw
+        }
 
-// TODO how can i make custom key. must be 256 bits, or 32 bytes. i think
-// TODO implement date check. use current if nothing
-// TODO user implements valid b65, then try padding just 0s, then try padding 0 before b64, then try user enters actual key, even though cant really
-window.crypto.subtle.importKey(
+        async function decMessage(key, cipher) {
+            const crypto_key = await window.crypto.subtle.importKey(
+                "jwk", //can be "jwk" or "raw"
+                {   //this is an example jwk key, "raw" would be an ArrayBuffer
+                    kty: "oct",
+                    k: key,
+                    alg: "A256CBC",
+                    ext: true,
+                },
+                {   //this is the algorithm options
+                    name: "AES-CBC",
+                },
+                false, //whether the key is extractable (i.e. can be used in exportKey)
+                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+            )
+
+            try {
+                var text = await window.crypto.subtle.decrypt(
+                {
+                    name: "AES-CBC",
+                    iv: new Uint8Array(16), //The initialization vector you used to encrypt
+                },
+                crypto_key, //from generateKey or importKey above
+                new TextDecoder('utf-8').decode(cipher) //ArrayBuffer of the data
+            )
+            } catch (error) {
+                console.error('Error decoding:', error);
+            }
+
+            return text
+        }
+
+        async function keepPolling() {
+            const key = await window.crypto.subtle.importKey(
     "jwk", //can be "jwk" or "raw"
     {   //this is an example jwk key, "raw" would be an ArrayBuffer
         kty: "oct",
@@ -85,13 +107,44 @@ window.crypto.subtle.importKey(
     false, //whether the key is extractable (i.e. can be used in exportKey)
     ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
 )
-.then(function(key){
-    //returns the symmetric key
-    console.log('import', key);
-})
+
+var enc = new TextEncoder(); 
+const data = enc.encode("hello")
+
+const encrypted = await window.crypto.subtle.encrypt(
+    {
+        name: "AES-CBC",
+        //Don't re-use initialization vectors!
+        //Always generate a new iv every time your encrypt!
+        iv: new Uint8Array(16),
+    },
+    key, //from generateKey or importKey above
+    data //ArrayBuffer of data you want to encrypt
+).catch(function(err){
+    console.error('enc err', err);
+});
+console.log('enc', encrypted)
+
+const cipher = new Uint8Array(encrypted)
+console.log(cipher)
+
+let decrypted = await window.crypto.subtle.decrypt(
+    {
+        name: "AES-CBC",
+        iv:  new ArrayBuffer(16), //The initialization vector you used to encrypt
+    },
+    key, //from generateKey or importKey above
+    encrypted //ArrayBuffer of the data
+)
 .catch(function(err){
     console.error(err);
 });
+
+const text = new Uint8Array(decrypted)
+console.log('text', decrypted)
+var dec = new TextDecoder("utf-8");
+console.log(dec.decode(decrypted));
+console.log(dec.decode(text))
 
             while (true) {
                 console.log('polling')
@@ -99,8 +152,33 @@ window.crypto.subtle.importKey(
             }
         }
 
-        function addMessage(data) {
+        function decodeWithCustomHandling(bytes, encoding = 'utf-8') {
+            const textDecoder = new TextDecoder(encoding);
+            let decodedString = '';
+
+            // thats confusing. it goes, errors, then keeps running. no
+            try {
+                decodedString = textDecoder.decode(bytes, { stream: true });
+            } catch (error) {
+                // Handle the error, e.g., replace invalid sequences
+                console.error('Error decoding:', error);
+                decodedString += '\ufffd'; // Unicode replacement character
+            }
+
+            // Handle any remaining incomplete sequences
+            decodedString += textDecoder.decode();
+
+            return decodedString;
+        }
+
+        // TODO stop recreating text decoder
+        async function addMessage(data) {
+            const key = document.getElementById("send-key").value
             console.log(data.username, getCookie('username'), data.username == getCookie('username'))
+            const cipher = atob(data.message)
+            console.log('cipher', cipher)
+            const text = await decMessage(key, cipher)
+            console.log('text', text)
             const html = `
             <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
@@ -108,7 +186,7 @@ window.crypto.subtle.importKey(
 							<small id="date" class="text-muted">${data.time}</small>
 						</div>
 						<div class="toast-body">
-							${data.message}
+							${text}
 						</div>
 					</div>
             `
@@ -135,10 +213,12 @@ window.crypto.subtle.importKey(
             document.getElementById("send-text").value = ""
 
             console.log(key, text)
+            const cipher = await encMessage(key, text)
+            console.log(btoa(cipher))
 
             const response = await fetch('/api/messages', {
                 method: 'POST',
-                body: JSON.stringify({ text, 'session': getCookie('session_id') }),
+                body: JSON.stringify({ text: btoa(cipher), 'session': getCookie('session_id') }),
                 headers: {
                     'content-type': 'application/json',
                 },
@@ -160,7 +240,7 @@ window.crypto.subtle.importKey(
         
             let data = await response.json();
             
-            addMessage(data[0])
+            await addMessage(data[0])
             scrollToBottom()
         }
 

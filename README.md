@@ -24,6 +24,30 @@ i think i have it divided decently now
 https://www.highgo.ca/2019/08/08/the-difference-in-five-modes-in-the-aes-encryption-algorithm/
 gonna use CBC, because i feel like i heard of it
 
+// TODO how can i make custom key. must be 256 bits, or 32 bytes. i think
+// TODO implement date check. use current if nothing
+// TODO user implements valid b65, then try padding just 0s, then try padding 0 before b64, then try user enters actual key, even though cant really
+// TODO use export to create a key. actually, i dont care
+
+```js
+// more like an example of bad ASI
+// how would a ; fix this
+// Example of ASI introducing unexpected behavior
+function foo() {
+    return
+    {
+        value: 42
+    };
+}
+
+console.log(foo()); // undefined, not { value: 42 }
+
+```
+
+oh, iv can always be the same
+
+oh, im enc wrong
+
 ## TODO
 - [ ] debug vs prod
 - [ ] basic site
