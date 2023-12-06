@@ -93,7 +93,7 @@
         }
 
         async function keepPolling() {
-            const key = await window.crypto.subtle.importKey(
+const key = await window.crypto.subtle.importKey(
     "jwk", //can be "jwk" or "raw"
     {   //this is an example jwk key, "raw" would be an ArrayBuffer
         kty: "oct",
@@ -125,9 +125,6 @@ const encrypted = await window.crypto.subtle.encrypt(
 });
 console.log('enc', encrypted)
 
-const cipher = new Uint8Array(encrypted)
-console.log(cipher)
-
 let decrypted = await window.crypto.subtle.decrypt(
     {
         name: "AES-CBC",
@@ -136,15 +133,9 @@ let decrypted = await window.crypto.subtle.decrypt(
     key, //from generateKey or importKey above
     encrypted //ArrayBuffer of the data
 )
-.catch(function(err){
-    console.error(err);
-});
 
-const text = new Uint8Array(decrypted)
-console.log('text', decrypted)
 var dec = new TextDecoder("utf-8");
 console.log(dec.decode(decrypted));
-console.log(dec.decode(text))
 
             while (true) {
                 console.log('polling')
