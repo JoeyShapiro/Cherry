@@ -44,8 +44,9 @@
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
             )
 
+            var enc = new TextEncoder();
             const encoded = new TextEncoder().encode(text)
-            let raw = await window.crypto.subtle.encrypt(
+            let encrypted = await window.crypto.subtle.encrypt(
                 {
                     name: "AES-CBC",
                     //Don't re-use initialization vectors!
@@ -56,8 +57,7 @@
                 encoded //ArrayBuffer of data you want to encrypt
             )
 
-            console.log(new Uint8Array(raw))
-            return raw
+            return encrypted
         }
 
         async function decMessage(key, cipher) {
@@ -76,18 +76,17 @@
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
             )
 
-            try {
-                var text = await window.crypto.subtle.decrypt(
+            const decrypted = await window.crypto.subtle.decrypt(
                 {
                     name: "AES-CBC",
                     iv: new Uint8Array(16), //The initialization vector you used to encrypt
                 },
                 crypto_key, //from generateKey or importKey above
-                new TextDecoder('utf-8').decode(cipher) //ArrayBuffer of the data
+                cipher //ArrayBuffer of the data
             )
-            } catch (error) {
-                console.error('Error decoding:', error);
-            }
+
+            const dec = new TextDecoder("utf-8");
+            const text = dec.decode(decrypted);
 
             return text
         }
@@ -166,7 +165,7 @@ console.log(dec.decode(decrypted));
         async function addMessage(data) {
             const key = document.getElementById("send-key").value
             console.log(data.username, getCookie('username'), data.username == getCookie('username'))
-            const cipher = atob(data.message)
+            const cipher = base64ToArrayBuffer(data.message)
             console.log('cipher', cipher)
             const text = await decMessage(key, cipher)
             console.log('text', text)
@@ -198,6 +197,26 @@ console.log(dec.decode(decrypted));
             }
         }
 
+        function arrayBufferToBase64( buffer ) {
+            var binary = '';
+            var bytes = new Uint8Array( buffer );
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode( bytes[ i ] );
+            }
+            return window.btoa( binary );
+        }
+
+        function base64ToArrayBuffer(base64) {
+            var binary_string =  window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array( len );
+            for (var i = 0; i < len; i++)        {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
         async function send() {
             const key = document.getElementById("send-key").value
             const text = document.getElementById("send-text").value
@@ -205,11 +224,13 @@ console.log(dec.decode(decrypted));
 
             console.log(key, text)
             const cipher = await encMessage(key, text)
-            console.log(btoa(cipher))
+            console.log('before', cipher)
+            console.log('sent', arrayBufferToBase64(cipher))
+            console.log('rec', base64ToArrayBuffer(arrayBufferToBase64(cipher)))
 
             const response = await fetch('/api/messages', {
                 method: 'POST',
-                body: JSON.stringify({ text: btoa(cipher), 'session': getCookie('session_id') }),
+                body: JSON.stringify({ text: arrayBufferToBase64(cipher), 'session': getCookie('session_id') }),
                 headers: {
                     'content-type': 'application/json',
                 },

@@ -47,6 +47,9 @@ console.log(foo()); // undefined, not { value: 42 }
 oh, iv can always be the same
 
 oh, im enc wrong
+echo -n W29iamVjdCBBcnJheUJ1ZmZlcl0= | base64 -d
+cant decrypt it
+special b64
 
 ## TODO
 - [ ] debug vs prod
