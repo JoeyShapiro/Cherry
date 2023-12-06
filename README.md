@@ -74,3 +74,4 @@ special b64
   - [ ] only messages with right key will be decrypted properly
 - [ ] test multiple users
 - [ ] use webhooks
+- [ ] comment and remove logs

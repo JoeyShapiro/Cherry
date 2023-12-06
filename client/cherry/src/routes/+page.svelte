@@ -27,7 +27,6 @@
             keepPolling()
         }
 
-        // TODO maybe just copy what they do
         async function encMessage(key, text) {
             let crypto_key = await window.crypto.subtle.importKey(
                 "jwk", //can be "jwk" or "raw"
@@ -92,73 +91,10 @@
         }
 
         async function keepPolling() {
-const key = await window.crypto.subtle.importKey(
-    "jwk", //can be "jwk" or "raw"
-    {   //this is an example jwk key, "raw" would be an ArrayBuffer
-        kty: "oct",
-        k: "Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE",
-        alg: "A256CBC",
-        ext: true,
-    },
-    {   //this is the algorithm options
-        name: "AES-CBC",
-    },
-    false, //whether the key is extractable (i.e. can be used in exportKey)
-    ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-)
-
-var enc = new TextEncoder(); 
-const data = enc.encode("hello")
-
-const encrypted = await window.crypto.subtle.encrypt(
-    {
-        name: "AES-CBC",
-        //Don't re-use initialization vectors!
-        //Always generate a new iv every time your encrypt!
-        iv: new Uint8Array(16),
-    },
-    key, //from generateKey or importKey above
-    data //ArrayBuffer of data you want to encrypt
-).catch(function(err){
-    console.error('enc err', err);
-});
-console.log('enc', encrypted)
-
-let decrypted = await window.crypto.subtle.decrypt(
-    {
-        name: "AES-CBC",
-        iv:  new ArrayBuffer(16), //The initialization vector you used to encrypt
-    },
-    key, //from generateKey or importKey above
-    encrypted //ArrayBuffer of the data
-)
-
-var dec = new TextDecoder("utf-8");
-console.log(dec.decode(decrypted));
-
             while (true) {
                 console.log('polling')
                 await pollMessages()
             }
-        }
-
-        function decodeWithCustomHandling(bytes, encoding = 'utf-8') {
-            const textDecoder = new TextDecoder(encoding);
-            let decodedString = '';
-
-            // thats confusing. it goes, errors, then keeps running. no
-            try {
-                decodedString = textDecoder.decode(bytes, { stream: true });
-            } catch (error) {
-                // Handle the error, e.g., replace invalid sequences
-                console.error('Error decoding:', error);
-                decodedString += '\ufffd'; // Unicode replacement character
-            }
-
-            // Handle any remaining incomplete sequences
-            decodedString += textDecoder.decode();
-
-            return decodedString;
         }
 
         // TODO stop recreating text decoder
@@ -224,9 +160,6 @@ console.log(dec.decode(decrypted));
 
             console.log(key, text)
             const cipher = await encMessage(key, text)
-            console.log('before', cipher)
-            console.log('sent', arrayBufferToBase64(cipher))
-            console.log('rec', base64ToArrayBuffer(arrayBufferToBase64(cipher)))
 
             const response = await fetch('/api/messages', {
                 method: 'POST',
