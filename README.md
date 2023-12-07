@@ -53,24 +53,24 @@ special b64
 
 ## TODO
 - [ ] debug vs prod
-- [ ] basic site
+- [x] basic site
 - [ ] https
-- [ ] database
-  - [ ] users
-  - [ ] messages
-- [ ] login
-  - [ ] username (counts as **plain** data)
-  - [ ] password (sha512 not secret)
-- [ ] client send encrypted data
-  - [ ] no modify or delete
+- [x] database
+  - [x] users
+  - [x] messages
+- [x] login
+  - [x] username (counts as **plain** data)
+  - [x] password (sha512 not secret)
+- [x] client send encrypted data
+  - [x] no modify or delete
   - [ ] can help with next steps
-  - [ ] just submit text that gets encrypted
-  - [ ] start with symmectric
-- [ ] server send encrypted messages
-  - [ ] they get all of them
-  - [ ] client has refresh button
-- [ ] client decryptds
-  - [ ] just type the key in the chat
+  - [x] just submit text that gets encrypted
+  - [x] start with symmectric
+- [x] server send encrypted messages
+  - [x] they get all of them
+  - [x] client has refresh button
+- [x] client decryptds
+  - [x] just type the key in the chat
   - [ ] only messages with right key will be decrypted properly
 - [ ] test multiple users
 - [ ] use webhooks
