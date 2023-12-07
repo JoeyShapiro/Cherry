@@ -23,6 +23,12 @@
             button.addEventListener("click", () => {
                 send()
             });
+
+            const buttonuse = document.getElementById("send-use");
+            buttonuse.addEventListener("click", () => {
+                useKey()
+            });
+
             scrollToBottom()
             keepPolling()
         }
@@ -105,12 +111,14 @@
             console.log('cipher', cipher)
             const text = await decMessage(key, cipher)
             console.log('text', text)
+            // oh clever, wait how does hidden work
             const html = `
             <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
 							<strong class="mr-auto m-1" style=${data.username == getCookie('username') ? "\"color: red\"" : "\"\""}>${data.username}</strong>
 							<small id="date" class="text-muted">${data.time}</small>
 						</div>
+                        <div id="original" hidden>${text}</div>
 						<div class="toast-body">
 							${text}
 						</div>
@@ -173,6 +181,9 @@
             console.log('return', data)
         }
 
+        // TODO use key actively. convert all messages with current key. should validate, but later. decrypt when they "set" key
+        // TODO so store messages in memory
+        // TODO update todos
         // will send a request, and the server will respond when a message is added
         async function pollMessages() {
             const chatbox = document.getElementById('chatbox')
@@ -195,6 +206,24 @@
             // Scroll to the bottom with smooth animation
             chatbox.lastElementChild.scrollIntoView({ behavior: 'smooth' });
             // chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function useKey() {
+            const key = document.getElementById("send-key").value
+            const chatbox = document.getElementById('chatbox')
+
+            // cool, but why so many fors
+            for (const chatmsg of chatbox.children) {
+                console.log(chatmsg)
+                console.log(chatmsg.querySelector('#original').textContent)
+                try {
+                    const cipher = base64ToArrayBuffer(chatmsg.querySelector('#original').textContent)
+                    // TODO create id
+                    chatmsg.querySelector('.toast-body').textContent = await decMessage(key, cipher)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         }
     </script>
 	
@@ -310,6 +339,7 @@
 							<strong class="mr-auto m-1" style={message.username == data.get.user.username ? "color: red" : ""}>{message.username}</strong>
 							<small id="date" class="text-muted">{message.time}</small>
 						</div>
+                        <div id="original" hidden>{message.message}</div>
 						<div class="toast-body">
 							{message.message}
 						</div>
@@ -323,6 +353,8 @@
         <div class="input-group mb-3">
             <input type="text" style="max-width: 25%;" class="form-control" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key">
+            <button style="width: auto;" class="btn btn-outline-secondary" type="button"
+                id="send-use">Use</button>
             <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default" placeholder="Message" id="send-text">
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
