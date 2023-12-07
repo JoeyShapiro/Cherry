@@ -182,7 +182,6 @@
         }
 
         // TODO use key actively. convert all messages with current key. should validate, but later. decrypt when they "set" key
-        // TODO so store messages in memory
         // TODO update todos
         // will send a request, and the server will respond when a message is added
         async function pollMessages() {
@@ -351,7 +350,8 @@
 
         <!-- input dialog -->
         <div class="input-group mb-3">
-            <input type="text" style="max-width: 25%;" class="form-control" aria-label="Sizing example input"
+            <!-- TODO do popup or something that will fit the text better -->
+            <input type="text" style="max-width: 25%;" class="form-control font-monospace" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key">
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
                 id="send-use">Use</button>
