@@ -11,14 +11,6 @@ services:
       MYSQL_PASSWORD: toor
     ports:
       - "9906:3306"
-  api:
-    build: ./api
-    depends_on:
-      - db
-    ports:
-      - 80:8000
-    volumes:
-      - ./api:/mnt/debug:ro
   client:
     build: ./client
     depends_on:
