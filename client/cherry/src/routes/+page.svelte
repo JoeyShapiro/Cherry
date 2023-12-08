@@ -59,7 +59,12 @@
             shown.style.display = 'block';
             shown.lastElementChild.id = "send-key"
 
-            return shown.outerHTML
+            const sendkey = shown.lastElementChild;
+            sendkey.addEventListener("input", () => {
+                validateKey();
+            })
+
+            return shown
         }
 
         function randomEffect(element) {
@@ -420,7 +425,7 @@
         <!-- input dialog -->
         <div class="input-group mb-3">
             <div class="popover-content d-flex" id="popover-key" style="display: none!important;">
-                <input type="text" class="form-control font-monospace" aria-label="Sizing example input" oninput="validateKey()" id="dummy-key"
+                <input type="text" class="form-control font-monospace" aria-label="Sizing example input" id="dummy-key"
                     aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
             </div>
             <button type="button" class="btn btn-lg btn-danger" id="send-pop-key"
