@@ -103,3 +103,6 @@ hex is dumb, and a lot of work
 - [ ] properly use headers
 - [ ] seperate functions in files
 - [ ] use ts and remove errors
+- [ ] dont hard code key length
+- [ ] break apart error checking for key
+- [ ] try to remove jquery

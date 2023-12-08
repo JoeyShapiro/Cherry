@@ -11,6 +11,7 @@
 </svelte:head>
 
 <section>
+    <script src="jquery-3.7.1.min.js"></script> <!-- ugh -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
@@ -23,6 +24,8 @@
     </style>
     
     <script lang="ts" type="module">
+        const b64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+        
         window.onload = init;
 
         function init() {
@@ -43,6 +46,11 @@
                 content: showElement(document.getElementById("popover-key"))
             })
 
+            // TODO prevent hide
+            popover.on('hide.base.popover', () => {
+                console.log('bye')
+            })
+
             scrollToBottom()
             keepPolling()
         }
@@ -51,7 +59,10 @@
             const dummy = document.getElementById("dummy-key");
             const popover = document.getElementById("send-key");
 
-            dummy.value = popover.value
+            // store the value
+            if (popover.value.length == 43 && b64Regex.test(popover.value)) {
+                dummy.value = popover.value;
+            }
         }
 
         function showElement(element) {
@@ -59,8 +70,7 @@
             shown.style.display = 'block';
             shown.lastElementChild.id = "send-key"
 
-            const sendkey = shown.lastElementChild;
-            sendkey.addEventListener("input", () => {
+            shown.lastElementChild.addEventListener("input", () => {
                 validateKey();
             })
 
@@ -428,7 +438,7 @@
                 <input type="text" class="form-control font-monospace" aria-label="Sizing example input" id="dummy-key"
                     aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
             </div>
-            <button type="button" class="btn btn-lg btn-danger" id="send-pop-key"
+            <button type="button" class="btn btn-lg btn-danger" id="send-pop-key" data-placement="top"
                 data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
                 id="send-use">Use</button>
