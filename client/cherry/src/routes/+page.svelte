@@ -15,6 +15,13 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     
+    <style>
+        .popover{
+            max-width: 100%; /* Max Width of the popover (depending on the container!) */
+            width: 30rem;
+        }
+    </style>
+    
     <script lang="ts" type="module">
         window.onload = init;
 
@@ -29,8 +36,23 @@
                 useKey()
             });
 
+            const popover = new bootstrap.Popover('#send-pop-key', {
+                container: 'body',
+                html: true,
+                sanitize: false,
+                content: showElement(document.getElementById("popover-key"))
+            })
+
             scrollToBottom()
             keepPolling()
+        }
+
+        function showElement(element) {
+            const shown = element.cloneNode(true);
+            shown.style.display = 'block';
+            shown.lastElementChild.id = "send-key"
+
+            return shown.outerHTML
         }
 
         function randomEffect(element) {
@@ -390,9 +412,14 @@
 
         <!-- input dialog -->
         <div class="input-group mb-3">
-            <!-- TODO do popup or something that will fit the text better -->
             <input type="text" style="max-width: 25%;" class="form-control font-monospace" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
+                aria-describedby="inputGroup-sizing-default" placeholder="Key" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
+            <div class="popover-content d-flex" id="popover-key" style="display: none!important;">
+                <input type="text" class="form-control font-monospace" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE">
+            </div>
+            <button type="button" class="btn btn-lg btn-danger" id="send-pop-key"
+                data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
                 id="send-use">Use</button>
             <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
