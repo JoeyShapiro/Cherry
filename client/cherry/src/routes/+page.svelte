@@ -11,7 +11,9 @@
 </svelte:head>
 
 <section>
-    <script src="jquery-3.7.1.min.js"></script> <!-- ugh -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script> <!-- ugh -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
@@ -24,15 +26,41 @@
     </style>
     
     <script lang="ts" type="module">
-        const b64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+        const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
         
         window.onload = init;
 
         function init() {
-            const button = document.getElementById("send-btn");
-            button.addEventListener("click", () => {
+            const btnsend = document.getElementById("send-btn");
+            const btnSendListener = document.getElementById("send-btn-listener");
+            const textbox = document.getElementById("send-text");
+            const keybtn = document.getElementById("send-pop-key");
+            const dummy = document.getElementById("dummy-key");
+
+            btnsend.addEventListener("click", () => {
                 send()
             });
+            btnsend.disabled = true;
+            btnSendListener.addEventListener("mouseover", () => {
+                // check the text box
+                if (textbox.value.length == 0) {
+                    textbox.classList.add("is-invalid");
+                } else {
+                    textbox.classList.remove("is-invalid");
+                }
+
+                // check the key, best way for now. but should have parameters
+                if (isValidKey(dummy.value)) {
+                    keybtn.classList.remove("btn-outline-danger");
+                } else {
+                    keybtn.classList.add("btn-outline-danger");
+                }
+            })
+            btnSendListener.addEventListener("mouseout", () => {
+                // remove them
+                textbox.classList.remove("is-invalid");
+                keybtn.classList.remove("btn-outline-danger");
+            })
 
             const buttonuse = document.getElementById("send-use");
             buttonuse.addEventListener("click", () => {
@@ -51,16 +79,25 @@
             //     console.log('bye')
             // })
 
+            textbox.addEventListener('input', () => {
+                btnsend.disabled = textbox.value.length == 0;
+            });
+
             scrollToBottom()
             keepPolling()
+        }
+
+        function isValidKey(possibleKey) {
+            return possibleKey.length == 43 && b64Regex.test(possibleKey);
         }
 
         function validateKey() {
             const dummy = document.getElementById("dummy-key");
             const popover = document.getElementById("send-key");
+            const btnsend = document.getElementById("send-btn");
 
             // store the value
-            if (popover.value.length == 43 && b64Regex.test(popover.value)) {
+            if (isValidKey(popover.value)) { // TODO maybe just save it no matter what
                 dummy.value = popover.value;
             }
         }
@@ -408,14 +445,16 @@
                         <input type="text" class="form-control font-monospace" aria-label="Sizing example input" id="dummy-key"
                             aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
                     </div>
-                    <button type="button" class="btn btn-lg btn-danger" id="send-pop-key" data-placement="top"
+                    <button type="button" class="btn btn-lg btn-outline-primary" id="send-pop-key" data-placement="top"
                         data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
                     <button style="width: auto;" class="btn btn-outline-secondary" type="button"
                         id="send-use">Use</button>
                     <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
                         aria-describedby="inputGroup-sizing-default" placeholder="Message" id="send-text">
-                    <button style="width: auto;" class="btn btn-outline-secondary" type="button"
-                        id="send-btn">Send</button>
+                    <div id="send-btn-listener">
+                        <button style="width: auto; height: 100%;" class="btn btn-primary" type="button"
+                            id="send-btn">Send</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -63,6 +63,13 @@ hex is dumb, and a lot of work
 i guess its a column
 i htink this makes more sense
 
+ok this is good. yes i got it
+this way is right. dont want to modify stuff
+or get something
+using that one. whatever i want to use
+maybe should use key in thibng. or just store whatever, even if wrong
+no, just dnt close
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site
