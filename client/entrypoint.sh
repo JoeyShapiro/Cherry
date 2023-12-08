@@ -1,4 +1,4 @@
 #! /bin/sh
 
 npm i
-npm run dev -- --host 0.0.0.0 --port 8080
+pnpm run dev  --host --port 8080

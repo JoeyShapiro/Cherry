@@ -24,6 +24,12 @@ services:
     depends_on:
       - api
     ports:
-      - 8080:8080
+      - 8080
     volumes:
       - ./client:/mnt/debug:rw
+  security:
+    build: ./security
+    depends_on:
+      - client
+    ports:
+      - 443:443

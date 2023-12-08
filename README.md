@@ -51,6 +51,10 @@ echo -n W29iamVjdCBBcnJheUJ1ZmZlcl0= | base64 -d
 cant decrypt it
 special b64
 
+vite https no work. oh well. they just toss in folder
+should i really be storing certs in cherry. should be in client or even main
+this way is now fine
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site
