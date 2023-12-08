@@ -166,6 +166,9 @@
             // Change this to div.childNodes to support multiple top-level nodes.
             chatbox.insertAdjacentHTML( 'beforeend', html );
             console.log('added')
+
+            // convert to fancy
+            randomEffect(chatbox.lastElementChild)
         }
 
         export function getCookie(name: string) {
