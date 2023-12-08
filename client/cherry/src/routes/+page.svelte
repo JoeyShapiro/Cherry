@@ -47,6 +47,13 @@
             keepPolling()
         }
 
+        function validateKey() {
+            const dummy = document.getElementById("dummy-key");
+            const popover = document.getElementById("send-key");
+
+            dummy.value = popover.value
+        }
+
         function showElement(element) {
             const shown = element.cloneNode(true);
             shown.style.display = 'block';
@@ -269,7 +276,7 @@
         }
 
         async function useKey() {
-            const key = document.getElementById("send-key").value
+            const key = document.getElementById("dummy-key").value
             const chatbox = document.getElementById('chatbox')
 
             // cool, but why so many fors
@@ -412,11 +419,9 @@
 
         <!-- input dialog -->
         <div class="input-group mb-3">
-            <input type="text" style="max-width: 25%;" class="form-control font-monospace" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Key" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
             <div class="popover-content d-flex" id="popover-key" style="display: none!important;">
-                <input type="text" class="form-control font-monospace" aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE">
+                <input type="text" class="form-control font-monospace" aria-label="Sizing example input" oninput="validateKey()" id="dummy-key"
+                    aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
             </div>
             <button type="button" class="btn btn-lg btn-danger" id="send-pop-key"
                 data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
