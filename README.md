@@ -57,10 +57,13 @@ this way is now fine
 new certs are generated, but that is fine
 could use mkcert, but would need it on host. meh
 
+how will use type in actual bytes
+hex is dumb, and a lot of work
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site
-- [ ] https
+- [x] https
 - [x] database
   - [x] users
   - [x] messages
@@ -81,3 +84,22 @@ could use mkcert, but would need it on host. meh
 - [ ] test multiple users
 - [ ] use webhooks
 - [ ] comment and remove logs
+- [ ] update ui
+  - [ ] proper login buttons
+  - [ ] change sidebar
+    - [ ] users?
+  - [ ] bottom left thing
+    - [ ] dont know what to show
+  - [ ] fix secret
+    - [ ] show whole key
+    - [ ] maybe click to reveal in popup
+    - [ ] if valid secret
+      - [ ] auto decrypt
+      - [ ] show animation
+      - [ ] when valid
+      - [ ] display errors when not valid
+- [ ] no longer use ... something
+- [ ] check valid login
+- [ ] properly use headers
+- [ ] seperate functions in files
+- [ ] use ts and remove errors
