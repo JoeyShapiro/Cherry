@@ -413,39 +413,41 @@
                 </div>
             </div>
 
-            <!-- chat -->
-            <div id="chatbox" class="d-flex flex-column flex-fill overflow-auto">
-				{#each data.get.messages as message}
-					<div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
-						<div class="toast-header">
-							<!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
-							<strong class="mr-auto m-1" style={message.username == data.get.user.username ? "color: red" : ""}>{message.username}</strong>
-							<small id="date" class="text-muted">{message.time}</small>
-						</div>
-                        <div id="original" hidden>{message.message}</div>
-						<div class="toast-body">
-							{message.message}
-						</div>
-					</div>
-				{/each}
-            </div>
-        </div>
+            <!-- chat and input -->
+            <div id="chat" class="d-flex flex-column flex-fill">
+                <!-- chat -->
+                <div id="chatbox" class="d-flex flex-column flex-fill overflow-auto">
+                    {#each data.get.messages as message}
+                        <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <!-- <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg> -->
+                                <strong class="mr-auto m-1" style={message.username == data.get.user.username ? "color: red" : ""}>{message.username}</strong>
+                                <small id="date" class="text-muted">{message.time}</small>
+                            </div>
+                            <div id="original" hidden>{message.message}</div>
+                            <div class="toast-body">
+                                {message.message}
+                            </div>
+                        </div>
+                    {/each}
+                </div>
 
-
-        <!-- input dialog -->
-        <div class="input-group mb-3">
-            <div class="popover-content d-flex" id="popover-key" style="display: none!important;">
-                <input type="text" class="form-control font-monospace" aria-label="Sizing example input" id="dummy-key"
-                    aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
+                <!-- input dialog -->
+                <div class="input-group mb-3">
+                    <div class="popover-content d-flex" id="popover-key" style="display: none!important;">
+                        <input type="text" class="form-control font-monospace" aria-label="Sizing example input" id="dummy-key"
+                            aria-describedby="inputGroup-sizing-default" placeholder="Key (Base 64)" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
+                    </div>
+                    <button type="button" class="btn btn-lg btn-danger" id="send-pop-key" data-placement="top"
+                        data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
+                    <button style="width: auto;" class="btn btn-outline-secondary" type="button"
+                        id="send-use">Use</button>
+                    <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default" placeholder="Message" id="send-text">
+                    <button style="width: auto;" class="btn btn-outline-secondary" type="button"
+                        id="send-btn">Send</button>
+                </div>
             </div>
-            <button type="button" class="btn btn-lg btn-danger" id="send-pop-key" data-placement="top"
-                data-bs-toggle="popover" data-bs-title="Key" data-bs-content="#popover-key">Key</button>
-            <button style="width: auto;" class="btn btn-outline-secondary" type="button"
-                id="send-use">Use</button>
-            <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Message" id="send-text">
-            <button style="width: auto;" class="btn btn-outline-secondary" type="button"
-                id="send-btn">Send</button>
         </div>
     </main>
 </section>

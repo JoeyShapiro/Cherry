@@ -60,6 +60,9 @@ could use mkcert, but would need it on host. meh
 how will use type in actual bytes
 hex is dumb, and a lot of work
 
+i guess its a column
+i htink this makes more sense
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site
@@ -106,3 +109,4 @@ hex is dumb, and a lot of work
 - [ ] dont hard code key length
 - [ ] break apart error checking for key
 - [ ] try to remove jquery
+- [ ] proper profile pics
