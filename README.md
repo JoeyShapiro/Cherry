@@ -55,6 +55,7 @@ vite https no work. oh well. they just toss in folder
 should i really be storing certs in cherry. should be in client or even main
 this way is now fine
 new certs are generated, but that is fine
+could use mkcert, but would need it on host. meh
 
 ## TODO
 - [ ] debug vs prod

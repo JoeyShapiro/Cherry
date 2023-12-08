@@ -14,7 +14,7 @@ services:
   client:
     build: ./client
     depends_on:
-      - api
+      - db
     ports:
       - 8080
     volumes:

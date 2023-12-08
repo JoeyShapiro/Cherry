@@ -33,6 +33,42 @@
             keepPolling()
         }
 
+        function randomEffect(element) {
+            const original = element.querySelector('#original').textContent
+            const text = element.querySelector('.toast-body').textContent
+
+            for (let i = 0; i < original.length+1; i++) {
+                setTimeout(() => {
+                    element.querySelector('.toast-body').textContent = revealText(text, original.length - i)
+                }, i * 70) // is this right
+            }
+        }
+
+        function revealText(text, i) {
+            const randomized = randomizeText(i);
+            let revealed = "";
+            for (let j = 0; j < i; j++) {
+                revealed += randomized[j];
+            }
+            for (let j = revealed.length; j < text.length; j++) {
+                revealed += text[j];
+            }
+
+            return revealed
+        }
+
+        // TODO could do basic text, but this is cooler
+        function randomizeText(length) {
+            const characterCollection = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            let randomized = "";
+            for(var i = 0; i < length; i++)
+			{
+				randomized += characterCollection[ Math.floor( Math.random() * characterCollection.length ) ];
+			}
+
+            return randomized;
+        }
+
         async function encMessage(key, text) {
             let crypto_key = await window.crypto.subtle.importKey(
                 "jwk", //can be "jwk" or "raw"
@@ -219,6 +255,7 @@
                     const cipher = base64ToArrayBuffer(chatmsg.querySelector('#original').textContent)
                     // TODO create id
                     chatmsg.querySelector('.toast-body').textContent = await decMessage(key, cipher)
+                    randomEffect(chatmsg)
                 } catch (error) {
                     console.log(error)
                 }
@@ -352,7 +389,7 @@
         <div class="input-group mb-3">
             <!-- TODO do popup or something that will fit the text better -->
             <input type="text" style="max-width: 25%;" class="form-control font-monospace" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key">
+                aria-describedby="inputGroup-sizing-default" placeholder="Key" id="send-key" value="Y0zt37HgOx-BY7SQjYVmrqhPkO44Ii2Jcb9yydUDPfE"> <!-- TODO debug -->
             <button style="width: auto;" class="btn btn-outline-secondary" type="button"
                 id="send-use">Use</button>
             <input type="text" style="width: auto;" class="form-control" aria-label="Sizing example input"
