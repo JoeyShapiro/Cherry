@@ -47,9 +47,9 @@
             })
 
             // TODO prevent hide
-            popover.on('hide.base.popover', () => {
-                console.log('bye')
-            })
+            // popover.on('hide.base.popover', () => {
+            //     console.log('bye')
+            // })
 
             scrollToBottom()
             keepPolling()
@@ -185,7 +185,7 @@
 
         // TODO stop recreating text decoder
         async function addMessage(data) {
-            const key = document.getElementById("send-key").value
+            const key = document.getElementById("dummy-key").value
             console.log(data.username, getCookie('username'), data.username == getCookie('username'))
             const cipher = base64ToArrayBuffer(data.message)
             console.log('cipher', cipher)
@@ -245,7 +245,7 @@
         }
 
         async function send() {
-            const key = document.getElementById("send-key").value
+            const key = document.getElementById("dummy-key").value
             const text = document.getElementById("send-text").value
             document.getElementById("send-text").value = ""
 
@@ -352,46 +352,16 @@
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
+                    {#each data.get.users as user}
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
+                        <a href="#" class="nav-link {user.username == data.get.user.username ? "active" : ""}" aria-current="page"> <!-- active makes it blue -->
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
-                            Home
+                            {user.username}
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="nav-link link-body-emphasis">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#speedometer2"></use>
-                            </svg>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-body-emphasis">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#table"></use>
-                            </svg>
-                            Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-body-emphasis">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#grid"></use>
-                            </svg>
-                            Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-body-emphasis">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Customers
-                        </a>
-                    </li>
+                    {/each}
                 </ul>
                 <hr>
                 <div class="dropdown">
