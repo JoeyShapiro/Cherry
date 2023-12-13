@@ -24,7 +24,9 @@
             width: 30rem;
         }
     </style>
-    
+
+    <script src="https://localhost/test.js"></script>
+
     <script lang="ts" type="module">
         const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
         var theme = getCookie("theme");
