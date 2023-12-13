@@ -1,6 +1,5 @@
 import { json } from '@sveltejs/kit'; import type { RequestHandler } from './$types';
 import { mysqlconnFn } from "$lib/db/mysql";
-import { v4 as uuidv4 } from "uuid";
 
 export const GET: RequestHandler = async ({ request, url }) => {
     const data: string = url.searchParams.get('last_date') || '';

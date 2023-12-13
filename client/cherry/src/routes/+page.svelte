@@ -90,8 +90,8 @@
                 btnsend.disabled = textbox.value.length == 0;
             });
 
-            scrollToBottom()
             keepPolling()
+            scrollToBottom()
         }
 
         function isValidKey(possibleKey) {
@@ -105,6 +105,8 @@
 
             // store the value
             dummy.value = popover.value;
+
+            return isValidKey(popover.value);
         }
 
         function showElement(element) {
@@ -302,12 +304,12 @@
             console.log('return', data)
         }
 
-        // TODO use key actively. convert all messages with current key. should validate, but later. decrypt when they "set" key
-        // TODO update todos
         // will send a request, and the server will respond when a message is added
         async function pollMessages() {
+            // this works
             const chatbox = document.getElementById('chatbox')
-            const last_date = chatbox.lastElementChild.querySelector('#date').textContent
+            const date_box = chatbox.lastElementChild;
+            const last_date = date_box !== null ? date_box.querySelector('#date').textContent : (new Date).toISOString();
 
             const response = await fetch(`/api/messages?last_date=${last_date}`, {
                 method: 'GET',
@@ -323,9 +325,10 @@
         function scrollToBottom() {
             var chatbox = document.getElementById('chatbox');
             
-            // Scroll to the bottom with smooth animation
-            chatbox.lastElementChild.scrollIntoView({ behavior: 'smooth' });
-            // chatContainer.scrollTop = chatContainer.scrollHeight;
+            if (chatbox.lastElementChild !== null) {
+                // Scroll to the bottom with smooth animation
+                chatbox.lastElementChild.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         async function useKey() {
