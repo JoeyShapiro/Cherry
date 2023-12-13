@@ -77,6 +77,9 @@ i will fix it, must be messing up the times
 oh, its a proxy error. nginx is doing the timeout
 just remove cause, play with it. dont need it. looks bad
 
+best way. for color, that works
+its faster. otherwise have to change all values live
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site

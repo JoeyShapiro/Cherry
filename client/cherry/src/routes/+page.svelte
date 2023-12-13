@@ -27,6 +27,7 @@
     
     <script lang="ts" type="module">
         const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
+        var theme = "light";
         
         window.onload = init;
 
@@ -93,6 +94,20 @@
 
             textbox.addEventListener('input', () => {
                 btnsend.disabled = textbox.value.length == 0;
+            });
+
+            // theme
+            const btn_theme = document.getElementById("btn-theme");
+            btn_theme.addEventListener("click", () => {
+                theme = theme == "dark" ? "light" : "dark";
+
+                document.documentElement.setAttribute('data-bs-theme', theme)
+                const chat = document.getElementById("chat");
+                if (theme == "dark") {
+                    chat.classList.add("bg-dark");
+                } else {
+                    chat.classList.remove("bg-dark");
+                }
             });
 
             keepPolling()
@@ -244,7 +259,7 @@
 							<small id="date" class="text-muted">${data.time}</small>
 						</div>
                         <div id="original" hidden>${text}</div>
-						<div class="toast-body">
+						<div class="toast-body text-body">
 							${text}
 						</div>
 					</div>
@@ -356,7 +371,7 @@
         }
     </script>
 	
-	<main class="d-flex flex-column vh-100">
+	<main id="mdiv" class="d-flex flex-column vh-100">
         <div class="d-flex flex-row flex-fill overflow-hidden">
             <!-- sidbar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary flex-fill" style="max-width: 280px;">
@@ -389,7 +404,7 @@
                         <strong>{data.get.user.username}</strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow">
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><button class="dropdown-item" id="btn-theme">Theme</button></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -400,7 +415,7 @@
             </div>
 
             <!-- chat and input -->
-            <div id="chat" class="d-flex flex-column flex-fill">
+            <div id="chat" class="d-flex flex-column flex-fill bg-gradient">
                 <!-- chat -->
                 <div id="chatbox" class="d-flex flex-column flex-fill overflow-auto">
                     {#each data.get.messages as message}
@@ -411,7 +426,7 @@
                                 <small id="date" class="text-muted">{message.time}</small>
                             </div>
                             <div id="original" hidden>{message.message}</div>
-                            <div class="toast-body">
+                            <div class="toast-body text-body">
                                 {message.message}
                             </div>
                         </div>
