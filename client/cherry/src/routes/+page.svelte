@@ -33,7 +33,7 @@
         function init() {
             // check for login first
             if (getCookie("session_id") == null) {
-                window.location.href = "https://localhost/login";
+                window.location.href = `${window.location.origin}/login`;
             }
 
             const btnsend = document.getElementById("send-btn");

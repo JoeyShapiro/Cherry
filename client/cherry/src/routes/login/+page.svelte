@@ -96,7 +96,7 @@
 
             setCookie('session_id', data.session_id)
             setCookie('username', input_user.value)
-            window.location.href = "https://localhost/";
+            window.location.href = `${window.location.origin}/`;
 
 
             return true;
