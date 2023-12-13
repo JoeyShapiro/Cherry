@@ -83,8 +83,9 @@ its faster. otherwise have to change all values live
 want to limit but dont. do it on the front end
 its their problem
 
+how could i get debug vs prod in docker
+
 ## TODO
-- [ ] debug vs prod
 - [x] basic site
 - [x] https
 - [x] database
@@ -126,15 +127,11 @@ its their problem
 - [x] check valid login
 - [ ] properly use headers
 - [ ] seperate functions in files
-- [ ] use ts and remove errors
-- [ ] dont hard code key length
 - [x] break apart error checking for key
-- [ ] try to remove jquery
 - [x] proper profile pics
 - [x] add dummy messages
 - [x] check if can proper start from nothing
-  - [x] where are errors *mysql*
-- [ ] add vars to docker
+  - [x] where are errors *mysql*\
 - [ ] pad key
   - [ ] try to show in ui
-- [ ] how to manage no key
+- [x] how to manage no key
