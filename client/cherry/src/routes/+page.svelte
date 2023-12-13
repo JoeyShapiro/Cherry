@@ -27,7 +27,7 @@
     
     <script lang="ts" type="module">
         const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
-        var theme = "light";
+        var theme = getCookie("theme");
         
         window.onload = init;
 
@@ -100,18 +100,24 @@
             const btn_theme = document.getElementById("btn-theme");
             btn_theme.addEventListener("click", () => {
                 theme = theme == "dark" ? "light" : "dark";
+                setCookie("theme", theme);
 
-                document.documentElement.setAttribute('data-bs-theme', theme)
-                const chat = document.getElementById("chat");
-                if (theme == "dark") {
-                    chat.classList.add("bg-dark");
-                } else {
-                    chat.classList.remove("bg-dark");
-                }
+                setTheme(theme);
             });
+            setTheme(theme);
 
             keepPolling()
             scrollToBottom()
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+            const chat = document.getElementById("chat");
+            if (theme == "dark") {
+                chat.classList.add("bg-dark");
+            } else {
+                chat.classList.remove("bg-dark");
+            }
         }
 
         function isValidKey(possibleKey) {
@@ -282,6 +288,17 @@
             if (parts.length == 2) {
                 return parts.pop().split(";").shift();
             }
+        }
+
+        export function setCookie(name: string, val: string) {
+            const date = new Date();
+            const value = val;
+
+            // Set it expire in 7 days
+            date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+
+            // Set it
+            document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
         }
 
         function arrayBufferToBase64( buffer ) {
