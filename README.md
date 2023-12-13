@@ -85,6 +85,12 @@ its their problem
 
 how could i get debug vs prod in docker
 
+i guess i can do fancy CSR svelte for stuff, but cant figure out how
+https://svelte.dev/docs/client-side-component-api
+next time
+i just want it working
+this works, so its fine
+
 ## TODO
 - [x] basic site
 - [x] https
