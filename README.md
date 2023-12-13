@@ -92,7 +92,7 @@ its faster. otherwise have to change all values live
   - [x] password (sha512 not secret)
 - [x] client send encrypted data
   - [x] no modify or delete
-  - [ ] can help with next steps
+  - [x] can help with next steps
   - [x] just submit text that gets encrypted
   - [x] start with symmectric
 - [x] server send encrypted messages
@@ -101,23 +101,24 @@ its faster. otherwise have to change all values live
 - [x] client decryptds
   - [x] just type the key in the chat
   - [ ] only messages with right key will be decrypted properly
-- [ ] test multiple users
+- [x] test multiple users
 - [ ] use webhooks
 - [ ] comment and remove logs
 - [ ] update ui
   - [ ] proper login buttons
-  - [ ] change sidebar
-    - [ ] users?
-  - [ ] bottom left thing
-    - [ ] dont know what to show
-  - [ ] fix secret
-    - [ ] show whole key
-    - [ ] maybe click to reveal in popup
-    - [ ] if valid secret
-      - [ ] auto decrypt
-      - [ ] show animation
-      - [ ] when valid
-      - [ ] display errors when not valid
+    - [ ] signout button
+  - [x] change sidebar
+    - [x] users?
+  - [x] bottom left thing
+    - [x] dont know what to show
+  - [x] fix secret
+    - [x] show whole key
+    - [x] maybe click to reveal in popup
+    - [x] if valid secret
+      - [x] auto decrypt
+      - [x] show animation
+      - [x] when valid
+      - [x] display errors when not valid
 - [ ] no longer use ... something
 - [ ] check valid login
 - [ ] properly use headers
@@ -126,7 +127,10 @@ its faster. otherwise have to change all values live
 - [ ] dont hard code key length
 - [ ] break apart error checking for key
 - [ ] try to remove jquery
-- [ ] proper profile pics
+- [x] proper profile pics
 - [ ] add dummy messages
 - [ ] check if can proper start from nothing
-  - [ ] where are errors
+  - [ ] where are errors *mysql*
+- [ ] add vars to docker
+- [ ] pad key
+  - [ ] try to show in ui
