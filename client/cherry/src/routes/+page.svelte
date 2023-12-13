@@ -290,7 +290,7 @@
             // Change this to div.childNodes to support multiple top-level nodes.
             chatbox.insertAdjacentHTML( 'beforeend', html );
             const date_box = chatbox.lastElementChild;
-            setCookie("last_date", date_box.querySelector('#date'));
+            setCookie("last_date", date_box.querySelector('#date').textContent);
 
             // convert to fancy
             randomEffect(chatbox.lastElementChild)
