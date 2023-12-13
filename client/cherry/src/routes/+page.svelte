@@ -31,6 +31,11 @@
         window.onload = init;
 
         function init() {
+            // check for login first
+            if (getCookie("session_id") == null) {
+                window.location.href = "https://localhost/login";
+            }
+
             const btnsend = document.getElementById("send-btn");
             const btnSendListener = document.getElementById("send-btn-listener");
             const textbox = document.getElementById("send-text");
