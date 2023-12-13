@@ -5,6 +5,7 @@ create table messages
     message varchar(512) not null,
     user_id int          not null,
     time    datetime default NOW() not null,
+    is_private tinyint(1) default 1 not null,
     constraint id
         unique (id)
 );
@@ -41,12 +42,12 @@ VALUES ('alice',
         'https://upload.wikimedia.org/wikipedia/commons/6/63/Alice_par_John_Tenniel_04.png');
 
 -- plug
-INSERT INTO project.messages (message, user_id)
+INSERT INTO project.messages (message, user_id, is_private)
 VALUES 
-    ('Go to github.com/JoeyShapiro/Cherry for the source code :)', 1),
-    ('All of the users are displayed on the left hand side', 1),
-    ('A key is required to send a message', 1),
-    ('The key should be AES256 and base 64 encoded', 1),
-    ('If the key is not long enough, it will be padded', 1),
-    ('The messages will be encrypted / decrypted with that key', 1),
-    ('If no key is used, they will not be encrytped and viewable by all', 1);
+    ('Go to github.com/JoeyShapiro/Cherry for the source code :)', 1, 0),
+    ('All of the users are displayed on the left hand side', 1, 0),
+    ('A key is required to send a message', 1, 0),
+    ('The key should be AES256 and base 64 encoded', 1, 0),
+    ('If the key is not long enough, it will be padded', 1, 0),
+    ('The messages will be encrypted / decrypted with that key', 1, 0),
+    ('If no key is used, they will not be encrytped and viewable by all', 1, 0);

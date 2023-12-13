@@ -260,12 +260,15 @@
 
         // TODO stop recreating text decoder
         async function addMessage(data) {
-            const key = document.getElementById("dummy-key").value
-            console.log(data.username, getCookie('username'), data.username == getCookie('username'))
-            const cipher = base64ToArrayBuffer(data.message)
-            console.log('cipher', cipher)
-            const text = await decMessage(key, cipher)
-            console.log('text', text)
+            const key = document.getElementById("dummy-key").value;
+
+            // would like to do this a math way, but this is good enough
+            let text = data.message;
+            if (data.is_private) {
+                const cipher = base64ToArrayBuffer(data.message);
+                text = await decMessage(key, cipher);
+            }
+            
             // oh clever, wait how does hidden work
             const html = `
             <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
@@ -284,7 +287,8 @@
 
             // Change this to div.childNodes to support multiple top-level nodes.
             chatbox.insertAdjacentHTML( 'beforeend', html );
-            console.log('added')
+            const date_box = chatbox.lastElementChild;
+            setCookie("last_date", date_box.querySelector('#date'));
 
             // convert to fancy
             randomEffect(chatbox.lastElementChild)
@@ -353,9 +357,8 @@
         // will send a request, and the server will respond when a message is added
         async function pollMessages() {
             // this works
-            const chatbox = document.getElementById('chatbox')
-            const date_box = chatbox.lastElementChild;
-            const last_date = date_box !== null ? date_box.querySelector('#date').textContent : (new Date).toISOString();
+            const last = getCookie("last_date");
+            const last_date = last != null ? last : (new Date(0)).toISOString()
 
             const response = await fetch(`/api/messages?last_date=${last_date}`, {
                 method: 'GET',
@@ -364,7 +367,9 @@
         
             let data = await response.json();
             
-            await addMessage(data[0])
+            for (const message of data) {
+                await addMessage(message);
+            }
             scrollToBottom()
         }
 

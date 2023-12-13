@@ -80,6 +80,9 @@ just remove cause, play with it. dont need it. looks bad
 best way. for color, that works
 its faster. otherwise have to change all values live
 
+want to limit but dont. do it on the front end
+its their problem
+
 ## TODO
 - [ ] debug vs prod
 - [x] basic site
