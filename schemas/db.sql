@@ -4,6 +4,7 @@ create table messages
         primary key,
     message varchar(512) not null,
     user_id int          not null,
+    time    datetime default NOW() not null,
     constraint id
         unique (id)
 );
@@ -21,6 +22,11 @@ create table project.users
 );
 
 
+-- server:???
+INSERT INTO project.users (username, password, pfp)
+VALUES ('server',
+        '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        'https://upload.wikimedia.org/wikipedia/en/c/c5/Bob_the_builder.jpg');
 
 -- bob:bob
 INSERT INTO project.users (username, password, pfp)
@@ -36,4 +42,11 @@ VALUES ('alice',
 
 -- plug
 INSERT INTO project.messages (message, user_id)
-VALUES ('github.com/JoeyShapiro/Cherry', 1);
+VALUES 
+    ('Go to github.com/JoeyShapiro/Cherry for the source code :)', 1),
+    ('All of the users are displayed on the left hand side', 1),
+    ('A key is required to send a message', 1),
+    ('The key should be AES256 and base 64 encoded', 1),
+    ('If the key is not long enough, it will be padded', 1),
+    ('The messages will be encrypted / decrypted with that key', 1),
+    ('If no key is used, they will not be encrytped and viewable by all', 1);

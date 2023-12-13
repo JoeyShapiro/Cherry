@@ -134,3 +134,4 @@ its faster. otherwise have to change all values live
 - [ ] add vars to docker
 - [ ] pad key
   - [ ] try to show in ui
+- [ ] how to manage no key
