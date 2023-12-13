@@ -94,9 +94,13 @@
             let data = await response.json();
             console.log('return', data)
 
-            setCookie('session_id', data.session_id)
-            setCookie('username', input_user.value)
-            window.location.href = `${window.location.origin}/`;
+            if (data.error == null) {
+                setCookie('session_id', data.session_id)
+                setCookie('username', input_user.value)
+                window.location.href = `${window.location.origin}/`;
+            } else {
+                alert(data.error);
+            }
 
 
             return true;

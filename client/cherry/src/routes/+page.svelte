@@ -33,7 +33,9 @@
 
         function init() {
             // check for login first
-            if (getCookie("session_id") == null) {
+            // this should deal with bad login data
+            const session = getCookie("session_id")
+            if (session == null || session == "") {
                 window.location.href = `${window.location.origin}/login`;
             }
 

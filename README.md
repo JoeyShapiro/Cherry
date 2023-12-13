@@ -120,7 +120,7 @@ its faster. otherwise have to change all values live
       - [x] when valid
       - [x] display errors when not valid
 - [ ] no longer use ... something
-- [ ] check valid login
+- [x] check valid login
 - [ ] properly use headers
 - [ ] seperate functions in files
 - [ ] use ts and remove errors
