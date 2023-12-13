@@ -74,10 +74,17 @@
                 content: showElement(document.getElementById("popover-key"))
             })
 
-            // TODO prevent hide
-            // popover.on('hide.base.popover', () => {
-            //     console.log('bye')
-            // })
+            $("#send-pop-key").on('hide.bs.popover', () => {
+                const saved = validateKey()
+                // cant prevent hide, but this is next best
+                if (!saved) {
+                    const keybtn = document.getElementById("send-pop-key");
+                    keybtn.classList.add("btn-outline-danger");
+                    window.setTimeout(() => {
+                        keybtn.classList.remove("btn-outline-danger");
+                    }, 250);
+                }
+            })
 
             textbox.addEventListener('input', () => {
                 btnsend.disabled = textbox.value.length == 0;
@@ -97,19 +104,13 @@
             const btnsend = document.getElementById("send-btn");
 
             // store the value
-            if (isValidKey(popover.value)) { // TODO maybe just save it no matter what
-                dummy.value = popover.value;
-            }
+            dummy.value = popover.value;
         }
 
         function showElement(element) {
             const shown = element.cloneNode(true);
             shown.style.display = 'block';
             shown.lastElementChild.id = "send-key"
-
-            shown.lastElementChild.addEventListener("input", () => {
-                validateKey();
-            })
 
             return shown
         }

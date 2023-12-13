@@ -69,6 +69,8 @@ or get something
 using that one. whatever i want to use
 maybe should use key in thibng. or just store whatever, even if wrong
 no, just dnt close
+dhoulfny validatd all the time. gets annoying. only at end
+should i save it or not. should i reset. maybe ask
 
 ## TODO
 - [ ] debug vs prod
