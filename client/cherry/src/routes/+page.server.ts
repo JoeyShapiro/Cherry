@@ -4,7 +4,7 @@ async function getUsers() {
     let mysqlconn = await mysqlconnFn();
     try {
         let results = await mysqlconn
-            .query("SELECT id, username, session FROM users ORDER BY username;")
+            .query("SELECT id, username, pfp, session FROM users ORDER BY username;")
 
         return results[0]
     } catch (error) {
