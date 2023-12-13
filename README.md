@@ -74,6 +74,7 @@ should i save it or not. should i reset. maybe ask
 
 oh its getting from the message. i thought i added it
 i will fix it, must be messing up the times
+oh, its a proxy error. nginx is doing the timeout
 
 ## TODO
 - [ ] debug vs prod
