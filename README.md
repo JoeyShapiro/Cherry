@@ -125,12 +125,12 @@ its faster. otherwise have to change all values live
 - [ ] seperate functions in files
 - [ ] use ts and remove errors
 - [ ] dont hard code key length
-- [ ] break apart error checking for key
+- [x] break apart error checking for key
 - [ ] try to remove jquery
 - [x] proper profile pics
-- [ ] add dummy messages
-- [ ] check if can proper start from nothing
-  - [ ] where are errors *mysql*
+- [x] add dummy messages
+- [x] check if can proper start from nothing
+  - [x] where are errors *mysql*
 - [ ] add vars to docker
 - [ ] pad key
   - [ ] try to show in ui
