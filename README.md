@@ -104,9 +104,9 @@ its faster. otherwise have to change all values live
 - [x] test multiple users
 - [ ] use webhooks
 - [ ] comment and remove logs
-- [ ] update ui
-  - [ ] proper login buttons
-    - [ ] signout button
+- [x] update ui
+  - [x] proper login buttons
+    - [x] signout button
   - [x] change sidebar
     - [x] users?
   - [x] bottom left thing

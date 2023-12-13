@@ -98,6 +98,13 @@
                 btnsend.disabled = textbox.value.length == 0;
             });
 
+            const btn_logout = document.getElementById("btn-logout");
+            btn_logout.addEventListener("click", () => {
+                setCookie('session_id', "");
+                setCookie('username', "");
+                window.location.href = `${window.location.origin}/`;
+            });
+
             // theme
             const btn_theme = document.getElementById("btn-theme");
             btn_theme.addEventListener("click", () => {
@@ -428,7 +435,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><button class="dropdown-item" id="btn-logout">Logout</button></li>
                     </ul>
                 </div>
             </div>
