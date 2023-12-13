@@ -33,3 +33,7 @@ INSERT INTO project.users (username, password, pfp)
 VALUES ('alice',
         '408b27d3097eea5a46bf2ab6433a7234a33d5e49957b13ec7acc2ca08e1a13c75272c90c8d3385d47ede5420a7a9623aad817d9f8a70bd100a0acea7400daa59',
         'https://upload.wikimedia.org/wikipedia/commons/6/63/Alice_par_John_Tenniel_04.png');
+
+-- plug
+INSERT INTO project.messages (message, user_id)
+VALUES ('github.com/JoeyShapiro/Cherry', 1);

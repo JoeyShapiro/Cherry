@@ -124,3 +124,6 @@ just remove cause, play with it. dont need it. looks bad
 - [ ] break apart error checking for key
 - [ ] try to remove jquery
 - [ ] proper profile pics
+- [ ] add dummy messages
+- [ ] check if can proper start from nothing
+  - [ ] where are errors
