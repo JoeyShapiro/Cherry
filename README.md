@@ -141,3 +141,5 @@ this works, so its fine
 - [ ] pad key
   - [ ] try to show in ui
 - [x] how to manage no key
+- [ ] move common scripts to header
+- [ ] change localhost in src to svelte thing
