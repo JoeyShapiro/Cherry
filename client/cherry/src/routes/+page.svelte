@@ -25,12 +25,11 @@
         }
     </style>
 
-    <script src="https://localhost/crypto.js" lang="js" type="module"></script>
-    <script src="https://localhost/design.js" lang="js" type="module"></script>
+    <script src="https://localhost/crypto.js" lang="js"></script>
+    <script src="https://localhost/design.js" lang="js"></script>
     <script src="https://localhost/util.js" lang="js"></script>
 
     <script lang="ts" type="module">
-        const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
         var theme = getCookie("theme");
         
         window.onload = init;
@@ -123,138 +122,6 @@
             scrollToBottom()
         }
 
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-bs-theme', theme)
-            const chat = document.getElementById("chat");
-            if (theme == "dark") {
-                chat.classList.add("bg-dark");
-            } else {
-                chat.classList.remove("bg-dark");
-            }
-        }
-
-        function isValidKey(possibleKey) {
-            return possibleKey.length == 43 && b64Regex.test(possibleKey);
-        }
-
-        function validateKey() {
-            const dummy = document.getElementById("dummy-key");
-            const popover = document.getElementById("send-key");
-            const btnsend = document.getElementById("send-btn");
-
-            // store the value
-            dummy.value = popover.value;
-
-            return isValidKey(popover.value);
-        }
-
-        function showElement(element) {
-            const shown = element.cloneNode(true);
-            shown.style.display = 'block';
-            shown.lastElementChild.id = "send-key"
-
-            return shown
-        }
-
-        function randomEffect(element) {
-            const original = element.querySelector('#original').textContent
-            const text = element.querySelector('.toast-body').textContent
-
-            for (let i = 0; i < original.length+1; i++) {
-                setTimeout(() => {
-                    element.querySelector('.toast-body').textContent = revealText(text, original.length - i)
-                }, i * 70) // is this right
-            }
-        }
-
-        function revealText(text, i) {
-            const randomized = randomizeText(i);
-            let revealed = "";
-            for (let j = 0; j < i; j++) {
-                revealed += randomized[j];
-            }
-            for (let j = revealed.length; j < text.length; j++) {
-                revealed += text[j];
-            }
-
-            return revealed
-        }
-
-        // TODO could do basic text, but this is cooler
-        function randomizeText(length) {
-            const characterCollection = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-            let randomized = "";
-            for(var i = 0; i < length; i++)
-			{
-				randomized += characterCollection[ Math.floor( Math.random() * characterCollection.length ) ];
-			}
-
-            return randomized;
-        }
-
-        async function encMessage(key, text) {
-            let crypto_key = await window.crypto.subtle.importKey(
-                "jwk", //can be "jwk" or "raw"
-                {   //this is an example jwk key, "raw" would be an ArrayBuffer
-                    kty: "oct",
-                    k: key,
-                    alg: "A256CBC",
-                    ext: true,
-                },
-                {   //this is the algorithm options
-                    name: "AES-CBC",
-                },
-                false, //whether the key is extractable (i.e. can be used in exportKey)
-                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-            )
-
-            var enc = new TextEncoder();
-            const encoded = new TextEncoder().encode(text)
-            let encrypted = await window.crypto.subtle.encrypt(
-                {
-                    name: "AES-CBC",
-                    //Don't re-use initialization vectors!
-                    //Always generate a new iv every time your encrypt!
-                    iv: new Uint8Array(16),
-                },
-                crypto_key, //from generateKey or importKey above
-                encoded //ArrayBuffer of data you want to encrypt
-            )
-
-            return encrypted
-        }
-
-        async function decMessage(key, cipher) {
-            const crypto_key = await window.crypto.subtle.importKey(
-                "jwk", //can be "jwk" or "raw"
-                {   //this is an example jwk key, "raw" would be an ArrayBuffer
-                    kty: "oct",
-                    k: key,
-                    alg: "A256CBC",
-                    ext: true,
-                },
-                {   //this is the algorithm options
-                    name: "AES-CBC",
-                },
-                false, //whether the key is extractable (i.e. can be used in exportKey)
-                ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-            )
-
-            const decrypted = await window.crypto.subtle.decrypt(
-                {
-                    name: "AES-CBC",
-                    iv: new Uint8Array(16), //The initialization vector you used to encrypt
-                },
-                crypto_key, //from generateKey or importKey above
-                cipher //ArrayBuffer of the data
-            )
-
-            const dec = new TextDecoder("utf-8");
-            const text = dec.decode(decrypted);
-
-            return text
-        }
-
         async function keepPolling() {
             while (true) {
                 console.log('polling')
@@ -298,32 +165,11 @@
             randomEffect(chatbox.lastElementChild)
         }
 
-        function arrayBufferToBase64( buffer ) {
-            var binary = '';
-            var bytes = new Uint8Array( buffer );
-            var len = bytes.byteLength;
-            for (var i = 0; i < len; i++) {
-                binary += String.fromCharCode( bytes[ i ] );
-            }
-            return window.btoa( binary );
-        }
-
-        function base64ToArrayBuffer(base64) {
-            var binary_string =  window.atob(base64);
-            var len = binary_string.length;
-            var bytes = new Uint8Array( len );
-            for (var i = 0; i < len; i++)        {
-                bytes[i] = binary_string.charCodeAt(i);
-            }
-            return bytes.buffer;
-        }
-
         async function send() {
             const key = document.getElementById("dummy-key").value
             const text = document.getElementById("send-text").value
             document.getElementById("send-text").value = ""
 
-            console.log(key, text)
             const cipher = await encMessage(key, text)
 
             const response = await fetch('/api/messages', {
@@ -335,7 +181,6 @@
             });
         
             let data = await response.json()
-            console.log('return', data)
         }
 
         // will send a request, and the server will respond when a message is added
@@ -357,26 +202,14 @@
             scrollToBottom()
         }
 
-        function scrollToBottom() {
-            var chatbox = document.getElementById('chatbox');
-            
-            if (chatbox.lastElementChild !== null) {
-                // Scroll to the bottom with smooth animation
-                chatbox.lastElementChild.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
         async function useKey() {
             const key = document.getElementById("dummy-key").value
             const chatbox = document.getElementById('chatbox')
 
             // cool, but why so many fors
             for (const chatmsg of chatbox.children) {
-                console.log(chatmsg)
-                console.log(chatmsg.querySelector('#original').textContent)
                 try {
                     const cipher = base64ToArrayBuffer(chatmsg.querySelector('#original').textContent)
-                    // TODO create id
                     chatmsg.querySelector('.toast-body').textContent = await decMessage(key, cipher)
                     randomEffect(chatmsg)
                 } catch (error) {
