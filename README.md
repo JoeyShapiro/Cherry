@@ -145,3 +145,5 @@ this works, so its fine
 - [ ] change localhost in src to svelte thing
 - [ ] what happens if it cant decrypt
 - [ ] stop recreating text decoder
+- [ ] timeout seems safer
+  - [ ] but say "nothing happened, try again"
