@@ -1,4 +1,10 @@
+/*
+* this is the meat of the project
+* it handles the encryption and decryption of messages
+*/
+
 async function encMessage(key, text) {
+    // create the key
     let crypto_key = await window.crypto.subtle.importKey(
         "jwk", //can be "jwk" or "raw"
         {   //this is an example jwk key, "raw" would be an ArrayBuffer
@@ -14,7 +20,7 @@ async function encMessage(key, text) {
         ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
     )
 
-    var enc = new TextEncoder();
+    // encrypt the message
     const encoded = new TextEncoder().encode(text)
     let encrypted = await window.crypto.subtle.encrypt(
         {
@@ -30,7 +36,9 @@ async function encMessage(key, text) {
     return encrypted
 }
 
+// decrypt the message
 async function decMessage(key, cipher) {
+    // create the key object
     const crypto_key = await window.crypto.subtle.importKey(
         "jwk", //can be "jwk" or "raw"
         {   //this is an example jwk key, "raw" would be an ArrayBuffer
@@ -46,6 +54,7 @@ async function decMessage(key, cipher) {
         ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
     )
 
+    // decrypt the message
     const decrypted = await window.crypto.subtle.decrypt(
         {
             name: "AES-CBC",
@@ -55,6 +64,7 @@ async function decMessage(key, cipher) {
         cipher //ArrayBuffer of the data
     )
 
+    // encode to utf 8
     const dec = new TextDecoder("utf-8");
     const text = dec.decode(decrypted);
 

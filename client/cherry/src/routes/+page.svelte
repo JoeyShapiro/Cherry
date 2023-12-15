@@ -25,11 +25,13 @@
         }
     </style>
 
+    <!-- load source files -->
     <script src="https://localhost/crypto.js" lang="js"></script>
     <script src="https://localhost/design.js" lang="js"></script>
     <script src="https://localhost/util.js" lang="js"></script>
 
     <script lang="ts" type="module">
+        // get the current theme
         var theme = getCookie("theme");
         
         window.onload = init;
@@ -51,6 +53,9 @@
             btnsend.addEventListener("click", () => {
                 send()
             });
+
+            // make the send button disabled if they cant send because of missing fields
+            // addtionally, highlight those fields in red
             btnsend.disabled = true;
             btnSendListener.addEventListener("mouseover", () => {
                 // check the text box
@@ -73,6 +78,7 @@
                 keybtn.classList.remove("btn-outline-danger");
             })
 
+            // convert all messages with the new key
             const buttonuse = document.getElementById("send-use");
             buttonuse.addEventListener("click", () => {
                 useKey()
@@ -85,6 +91,7 @@
                 content: showElement(document.getElementById("popover-key"))
             })
 
+            // check if the key is valid
             $("#send-pop-key").on('hide.bs.popover', () => {
                 const saved = validateKey()
                 // cant prevent hide, but this is next best
@@ -97,10 +104,12 @@
                 }
             })
 
+            // disable send if their is no text
             textbox.addEventListener('input', () => {
                 btnsend.disabled = textbox.value.length == 0;
             });
 
+            // simple way to handle logging out
             const btn_logout = document.getElementById("btn-logout");
             btn_logout.addEventListener("click", () => {
                 setCookie('session_id', "");
@@ -118,10 +127,12 @@
             });
             setTheme(theme);
 
+            // long polling
             keepPolling()
             scrollToBottom()
         }
 
+        // this will continue to poll for new messages in the background
         async function keepPolling() {
             while (true) {
                 console.log('polling')
@@ -129,7 +140,7 @@
             }
         }
 
-        // TODO stop recreating text decoder
+        // add a message to the chatbox
         async function addMessage(data) {
             const key = document.getElementById("dummy-key").value;
 
@@ -140,7 +151,7 @@
                 text = await decMessage(key, cipher);
             }
             
-            // oh clever, wait how does hidden work
+            // oh clever
             const html = `
             <div class="toast fade show m-2 w-50" role="alert" aria-live="assertive" aria-atomic="true">
 						<div class="toast-header">
@@ -165,13 +176,17 @@
             randomEffect(chatbox.lastElementChild)
         }
 
+        // send a message
         async function send() {
+            // get the message and key
             const key = document.getElementById("dummy-key").value
             const text = document.getElementById("send-text").value
             document.getElementById("send-text").value = ""
 
+            // encrypt and b64 it
             const cipher = await encMessage(key, text)
 
+            // send it
             const response = await fetch('/api/messages', {
                 method: 'POST',
                 body: JSON.stringify({ text: arrayBufferToBase64(cipher), 'session': getCookie('session_id') }),
@@ -180,10 +195,16 @@
                 },
             });
         
+            // wait for a response
             let data = await response.json()
         }
 
         // will send a request, and the server will respond when a message is added
+        // rather than checking every n seconds, or every instant
+        // example of how it works:
+        // client: hey server has anything happened, since last i asked? dont tell me until something did
+        // * client waits an arbitrary amount of time (setTimeout: 0) *
+        // server: yeah here you go.
         async function pollMessages() {
             // this works
             const last = getCookie("last_date");
@@ -196,12 +217,14 @@
         
             let data = await response.json();
             
+            // add the messages and scroll to the bottom of the list
             for (const message of data) {
                 await addMessage(message);
             }
             scrollToBottom()
         }
 
+        // updates all messages in the log
         async function useKey() {
             const key = document.getElementById("dummy-key").value
             const chatbox = document.getElementById('chatbox')

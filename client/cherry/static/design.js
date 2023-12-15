@@ -1,3 +1,9 @@
+/*
+* this is just the design
+* it makes things look fancy
+*/
+
+// set the theme for bootstrap
 function setTheme(theme) {
     document.documentElement.setAttribute('data-bs-theme', theme)
     const chat = document.getElementById("chat");
@@ -8,6 +14,7 @@ function setTheme(theme) {
     }
 }
 
+// show the key popover
 function showElement(element) {
     const shown = element.cloneNode(true);
     shown.style.display = 'block';
@@ -16,6 +23,7 @@ function showElement(element) {
     return shown
 }
 
+// do the random effect things
 function randomEffect(element) {
     const original = element.querySelector('#original').textContent
     const text = element.querySelector('.toast-body').textContent
@@ -27,6 +35,7 @@ function randomEffect(element) {
     }
 }
 
+// reveal only a certain portion of the text
 function revealText(text, i) {
     const randomized = randomizeText(i);
     let revealed = "";
@@ -40,7 +49,9 @@ function revealText(text, i) {
     return revealed
 }
 
+// create randomized text
 function randomizeText(length) {
+    // uses the base 64 char set
     const characterCollection = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     let randomized = "";
     for(var i = 0; i < length; i++)
@@ -51,6 +62,7 @@ function randomizeText(length) {
     return randomized;
 }
 
+// scroll to the botton of the chat log
 function scrollToBottom() {
     var chatbox = document.getElementById('chatbox');
     

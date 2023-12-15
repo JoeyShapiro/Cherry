@@ -1,5 +1,11 @@
+/*
+* this is just helper functions used by the code
+*/
+
+// used to validate the key
 const b64Regex = /^[-A-Za-z0-9+/]*={0,3}$/;
 
+// get a cookie from the browser
 function getCookie(name) {
     const value = "; " + document.cookie;
     const parts = value.split("; " + name + "=");
@@ -9,6 +15,7 @@ function getCookie(name) {
     }
 }
 
+// set a cookie for the browser
 function setCookie(name, val) {
     const date = new Date();
     const value = val;
@@ -20,6 +27,8 @@ function setCookie(name, val) {
     document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
 }
 
+// convert an array (encrypted data) to base 64
+// this allows for safe transportation across the network (can be sent)
 function arrayBufferToBase64( buffer ) {
     var binary = '';
     var bytes = new Uint8Array( buffer );
@@ -30,6 +39,7 @@ function arrayBufferToBase64( buffer ) {
     return window.btoa( binary );
 }
 
+// convert a base 64 string to an array (encrypted data)
 function base64ToArrayBuffer(base64) {
     var binary_string =  window.atob(base64);
     var len = binary_string.length;
@@ -40,14 +50,16 @@ function base64ToArrayBuffer(base64) {
     return bytes.buffer;
 }
 
+// check if a key is valid
+// it must be the proper size and pass the regex
 function isValidKey(possibleKey) {
     return possibleKey.length == 43 && b64Regex.test(possibleKey);
 }
 
+// validate the key and update the popover
 function validateKey() {
     const dummy = document.getElementById("dummy-key");
     const popover = document.getElementById("send-key");
-    const btnsend = document.getElementById("send-btn");
 
     // store the value
     dummy.value = popover.value;

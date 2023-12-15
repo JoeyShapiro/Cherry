@@ -132,7 +132,7 @@ this works, so its fine
 - [ ] no longer use ... something
 - [x] check valid login
 - [ ] properly use headers
-- [ ] seperate functions in files
+- [x] seperate functions in files
 - [x] break apart error checking for key
 - [x] proper profile pics
 - [x] add dummy messages
@@ -143,3 +143,5 @@ this works, so its fine
 - [x] how to manage no key
 - [ ] move common scripts to header
 - [ ] change localhost in src to svelte thing
+- [ ] what happens if it cant decrypt
+- [ ] stop recreating text decoder
