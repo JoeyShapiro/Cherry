@@ -55,14 +55,20 @@ async function decMessage(key, cipher) {
     )
 
     // decrypt the message
-    const decrypted = await window.crypto.subtle.decrypt(
+    let decrypted = "";
+    decrypted = await window.crypto.subtle.decrypt(
         {
             name: "AES-CBC",
             iv: new Uint8Array(16), //The initialization vector you used to encrypt
         },
         crypto_key, //from generateKey or importKey above
         cipher //ArrayBuffer of the data
-    )
+    ).catch(e => {
+        // cant decrypt, but good enouth
+        console.log("Error", e.stack);
+        console.log("Error", e.name);
+        console.log("Error", e.message);
+    });
 
     // encode to utf 8
     const dec = new TextDecoder("utf-8");

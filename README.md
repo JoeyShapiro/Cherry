@@ -110,10 +110,10 @@ this works, so its fine
   - [x] client has refresh button
 - [x] client decryptds
   - [x] just type the key in the chat
-  - [ ] only messages with right key will be decrypted properly
+  - [x] only messages with right key will be decrypted properly
 - [x] test multiple users
 - [ ] use webhooks
-- [ ] comment and remove logs
+- [x] comment and remove logs
 - [x] update ui
   - [x] proper login buttons
     - [x] signout button
@@ -129,7 +129,6 @@ this works, so its fine
       - [x] show animation
       - [x] when valid
       - [x] display errors when not valid
-- [ ] no longer use ... something
 - [x] check valid login
 - [ ] properly use headers
 - [x] seperate functions in files
@@ -143,7 +142,9 @@ this works, so its fine
 - [x] how to manage no key
 - [ ] move common scripts to header
 - [ ] change localhost in src to svelte thing
-- [ ] what happens if it cant decrypt
+- [x] what happens if it cant decrypt
+  - [ ] print proper garbage
 - [ ] stop recreating text decoder
 - [ ] timeout seems safer
   - [ ] but say "nothing happened, try again"
+- [ ] reset session on bad session

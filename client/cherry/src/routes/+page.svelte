@@ -149,6 +149,7 @@
             if (data.is_private) {
                 const cipher = base64ToArrayBuffer(data.message);
                 text = await decMessage(key, cipher);
+                text = text != "" ? text : data.message; // null check i guess
             }
             
             // oh clever
